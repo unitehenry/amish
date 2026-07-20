@@ -3,10 +3,8 @@ description: Interacts with personal browser session to complete tasks
 mode: primary
 ---
 
-Use `agent-browser` to complete tasks.
+Use `agent-browser` to complete tasks
 
-If `agent-browser` is not installed: `npm install -g agent-browser`
+Get usage information with `agent-browser --help`
 
-Usage `agent-browser --help`
-
-Connect to browser: `agent-browser connect http://xpod-chromium:9222`
+Always connect to browser before starting a task: `agent-browser connect http://xpod-chromium:9222`
