@@ -32,6 +32,7 @@ sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
 '
+
 # Build and Load Xpod
 rm -rf xpod && git clone 'https://github.com/unitehenry/xpod'
 
@@ -53,9 +54,7 @@ ssh $HOST 'docker rm -f guacd guacamole xpod-chromium agentx-opencode 2>/dev/nul
 ssh $HOST 'docker run -d --network agentx --name guacd docker.io/guacamole/guacd'
 
 # Run guacamole
-ssh $HOST 'mkdir -p /var/lib/guacamole/config'
-
-scp -r ./guacamole/* $HOST:/var/lib/guacamole
+scp -r ./guacamole $HOST:/var/lib
 
 ssh $HOST 'docker run -d \
   --network agentx \
@@ -73,15 +72,16 @@ ssh $HOST 'docker run -d \
   localhost/xpod-chromium'
 
 # Run opencode
-ssh $HOST 'mkdir -p /var/lib/opencode'
+scp -r ./opencode $HOST:/var/lib
 
-scp -r ./opencode/* $HOST:/var/lib/opencode
+ssh $HOST "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' xpod-chromium > /tmp/cdp_hostname"
 
 ssh $HOST 'docker run -d \
   --network agentx \
   -v /var/lib/opencode/.opencode:/etc/opencode \
   --name agentx-opencode \
   -p 127.0.0.1:4096:4096 \
+  -e CDP_HOSTNAME="$(cat /tmp/cdp_hostname):9222" \
   localhost/agentx-opencode'
 
 # Install Nginx
