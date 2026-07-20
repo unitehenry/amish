@@ -34,17 +34,17 @@ fi
 '
 
 # Build and Load Xpod
-rm -rf xpod && git clone 'https://github.com/unitehenry/xpod'
+ssh $HOST 'apt-get install -y git'
 
-podman build -t xpod-base -f ./xpod/Containerfile .
-podman build -t xpod-chromium -f ./xpod/apps/chromium/Containerfile .
+ssh $HOST 'rm -rf /var/lib/xpod && git clone https://github.com/unitehenry/xpod /var/lib/xpod'
 
-podman save xpod-chromium | ssh $HOST "docker load"
+ssh $HOST 'docker build -t xpod-base -f /var/lib/xpod/Containerfile /var/lib/xpod'
+ssh $HOST 'docker build -t xpod-chromium -f /var/lib/xpod/apps/chromium/Containerfile /var/lib/xpod'
 
 # Build and Load Agentx (Opencode + Agent-Browser)
-podman build -t agentx-opencode -f ./opencode/Containerfile .
+scp ./opencode/Containerfile $HOST:/tmp/Containerfile
 
-podman save agentx-opencode | ssh $HOST "docker load"
+ssh $HOST 'docker build -t agentx-opencode -f /tmp/Containerfile .'
 
 # Agentx network
 ssh $HOST 'docker network inspect agentx >/dev/null 2>&1 || docker network create agentx'
@@ -69,7 +69,7 @@ ssh $HOST 'docker run -d \
   --cap-add=SYS_ADMIN \
   --network agentx \
   --name xpod-chromium \
-  localhost/xpod-chromium'
+  xpod-chromium'
 
 # Run opencode
 scp -r ./opencode $HOST:/var/lib
@@ -82,7 +82,7 @@ ssh $HOST 'docker run -d \
   --name agentx-opencode \
   -p 127.0.0.1:4096:4096 \
   -e CDP_HOSTNAME="$(cat /tmp/cdp_hostname):9222" \
-  localhost/agentx-opencode'
+  agentx-opencode'
 
 # Install Nginx
 ssh $HOST 'sudo apt-get install -y nginx'

@@ -6,7 +6,7 @@ RUN npm install -g opencode-ai
 
 RUN npm install -g agent-browser
 
-ENV OPENCODE_CONFIG_DIR /etc/opencode
+ENV OPENCODE_CONFIG_DIR=/etc/opencode
 
 RUN mkdir -p /etc/opencode
 
