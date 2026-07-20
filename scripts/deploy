@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+HOST=$1
+
+# Update Dependencies
+ssh $HOST 'apt-get update'
+
+# Install Docker
+ssh $HOST 'sudo apt update'
+ssh $HOST 'sudo apt install ca-certificates curl'
+ssh $HOST 'sudo install -m 0755 -d /etc/apt/keyrings'
+ssh $HOST 'sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc'
+ssh $HOST 'sudo chmod a+r /etc/apt/keyrings/docker.asc'
+
+ssh $HOST '
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/debian
+Suites: $(. /etc/os-release && echo "$VERSION_CODENAME")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF'
+
+ssh $HOST 'sudo apt update'
+
+ssh $HOST 'sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin'
+
+# Build and Load Xpod
+git clone 'https://github.com/unitehenry/xpod'
+
+podman build -tag xpod-chromium -f ./xpod/apps/chromium/Container .
+
+podman save xpod-chromium | ssh $HOST "docker load"
+
+# Build and Load Agentx (Opencode + Agent-Browser)
+podman build -tag agentx-opencode -f ./opencode/Containerfile .
+
+podman save agentx-opencode | ssh $HOST "docker load"
+
+# Agentx network
+ssh $HOST 'docker network inspect agentx >/dev/null 2>&1 || docker network create agentx'
+
+# Run guacd
+ssh $HOST 'docker run -d --network agentx --name guacd docker.io/guacamole/guacd'
+
+# Run guacamole
+ssh $HOST 'mkdir -p /var/lib/guacamole'
+
+scp ./guacamole/config/* $HOST:/var/lib/guacamole
+
+ssh $HOST 'docker run -d --network agentx -v /var/lib/guacamole/config:/etc/guacamole --name guacamole -p 127.0.0.1:8080:8080 docker.io/guacamole/guacamole'
+
+# Run xpod-chromium
+ssh $HOST 'docker run -d --network agentx --name xpod-chromium -e GUACD_HOSTNAME="guacd" -p 127.0.0.1:8080:8080 docker.io/guacamole/guacamole'
+
+# Run opencode
+ssh $HOST 'mkdir -p /var/lib/opencode'
+
+scp ./opencode/.opencode/* $HOST:/var/lib/opencode
+
+ssh $HOST 'docker run -d --network agentx -v /var/lib/opencode:/etc/opencode --name agentx-opencode -p 127.0.0.1:4096:4096 docker.io/guacamole/guacamole'
+
+# Install Nginx
+ssh $HOST 'apt-get install nginx'
+
+scp ./nginx/nginx.conf $HOST:/etc/nginx/nginx.conf
+
+# Create htpasswd
+# 1. ask for username/password
+# 2. create .htpasswd
+# 3. upload /etc/nginx/.htpasswd
+
+# Reload nginx
+ssh $HOST 'systemctl restart nginx'

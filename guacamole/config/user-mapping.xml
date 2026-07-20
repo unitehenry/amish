@@ -1,0 +1,7 @@
+<user-mapping>
+  <authorize username="admin" password="password">
+    <protocol>vnc</protocol>
+    <param name="hostname">xpod-chromium</param>
+    <param name="port">5900</param>
+  </authorize>
+</user-mapping>
