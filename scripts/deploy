@@ -67,9 +67,13 @@ ssh $HOST 'apt-get install nginx'
 scp ./nginx/nginx.conf $HOST:/etc/nginx/nginx.conf
 
 # Create htpasswd
-# 1. ask for username/password
-# 2. create .htpasswd
-# 3. upload /etc/nginx/.htpasswd
+ssh -t $HOST '
+apt-get install -y apache2-utils
+read -p "Username: " USERNAME
+read -s -p "Password: " PASSWORD
+echo
+htpasswd -c -b /etc/nginx/.htpasswd "$USERNAME" "$PASSWORD"
+'
 
 # Reload nginx
 ssh $HOST 'systemctl restart nginx'
