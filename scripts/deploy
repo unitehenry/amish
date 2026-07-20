@@ -55,17 +55,31 @@ ssh $HOST 'mkdir -p /var/lib/guacamole'
 
 scp -r ./guacamole/config/* $HOST:/var/lib/guacamole
 
-ssh $HOST 'docker run -d --network agentx -v /var/lib/guacamole/config:/etc/guacamole -e GUACD_HOSTNAME="guacd" --name guacamole -p 127.0.0.1:8080:8080 docker.io/guacamole/guacamole'
+ssh $HOST 'docker run -d \
+  --network agentx \
+  -v /var/lib/guacamole/config:/etc/guacamole \
+  -e GUACD_HOSTNAME="guacd" \
+  --name guacamole \
+  -p 127.0.0.1:8080:8080 \
+  docker.io/guacamole/guacamole'
 
 # Run xpod-chromium
-ssh $HOST 'docker run -d --network agentx --name xpod-chromium localhost/xpod-chromium'
+ssh $HOST 'docker run -d \
+  --network agentx \
+  --name xpod-chromium \
+  localhost/xpod-chromium'
 
 # Run opencode
 ssh $HOST 'mkdir -p /var/lib/opencode'
 
 scp -r ./opencode/.opencode/* $HOST:/var/lib/opencode
 
-ssh $HOST 'docker run -d --network agentx -v /var/lib/opencode:/etc/opencode --name agentx-opencode -p 127.0.0.1:4096:4096 localhost/agentx-opencode'
+ssh $HOST 'docker run -d \
+  --network agentx \
+  -v /var/lib/opencode:/etc/opencode \
+  --name agentx-opencode \
+  -p 127.0.0.1:4096:4096 \
+  localhost/agentx-opencode'
 
 # Install Nginx
 ssh $HOST 'sudo apt-get install -y nginx'
