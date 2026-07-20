@@ -31,7 +31,7 @@ ssh $HOST 'sudo apt update'
 ssh $HOST 'sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin'
 
 # Build and Load Xpod
-git clone 'https://github.com/unitehenry/xpod'
+rm -rf xpod && git clone 'https://github.com/unitehenry/xpod'
 
 podman build -t xpod-base -f ./xpod/Containerfile .
 podman build -t xpod-chromium -f ./xpod/apps/chromium/Containerfile .
@@ -45,6 +45,7 @@ podman save agentx-opencode | ssh $HOST "docker load"
 
 # Agentx network
 ssh $HOST 'docker network inspect agentx >/dev/null 2>&1 || docker network create agentx'
+ssh $HOST 'docker rm -f guacd guacamole xpod-chromium agentx-opencode 2>/dev/null || true'
 
 # Run guacd
 ssh $HOST 'docker run -d --network agentx --name guacd docker.io/guacamole/guacd'
