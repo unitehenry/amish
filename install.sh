@@ -4,6 +4,8 @@ set -e
 
 apt-get update
 
+apt-get install -y sudo
+
 # Install Docker
 if ! command -v docker >/dev/null 2>&1; then
   sudo apt update
@@ -25,6 +27,9 @@ EOF
 
   sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 fi
+
+# Start docker
+sudo systemctl start docker
 
 # Build xpod
 apt-get install -y git

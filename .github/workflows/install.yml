@@ -1,0 +1,13 @@
+name: Install
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  install:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Run install script
+        run: curl -sSL https://raw.githubusercontent.com/unitehenry/amish/master/install.sh | bash
