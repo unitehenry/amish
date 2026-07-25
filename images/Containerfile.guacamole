@@ -1,0 +1,19 @@
+FROM guacamole/guacamole
+
+USER root
+
+RUN mkdir -p /etc/guacamole && chown guacamole:guacamole /etc/guacamole
+
+COPY --chown=guacamole:guacamole guacamole/config/user-mapping.xml /etc/guacamole/user-mapping.xml
+
+RUN cat > /opt/guacamole/entrypoint.d/150-replace-credentials.sh << 'EOF'
+if [ -n "${USERNAME}" ] && [ -n "${PASSWORD}" ]; then
+    PASS_HASH=$(echo -n "${PASSWORD}" | md5sum | awk '{print $1}')
+    sed -i "s/__USERNAME__/${USERNAME}/g" /etc/guacamole/user-mapping.xml
+    sed -i "s/__PASSWORD__/${PASS_HASH}/g" /etc/guacamole/user-mapping.xml
+fi
+EOF
+
+RUN chmod 644 /opt/guacamole/entrypoint.d/150-replace-credentials.sh /etc/guacamole/user-mapping.xml
+
+USER guacamole
