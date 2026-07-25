@@ -85,12 +85,30 @@ docker run -d --pull=never \
   xpod-chromium
 
 # Run agent browser mcp
-docker run -d --pull=never \
-  --network=amish \
-  -e CDP_PORT="http://$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' xpod-chromium):9222" \
-  -p 127.0.0.1:8000:8000 \
-  --name agent-browser-mcp \
-  agent-browser-mcp
+if [ "${WIZARD}" = "0" ]; then
+  docker run -d --pull=never \
+    --network=amish \
+    -e CDP_PORT="http://$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' xpod-chromium):9222" \
+    -p 127.0.0.1:8000:8000 \
+    --name agent-browser-mcp \
+    agent-browser-mcp
+else
+  read -rp "Enter GitHub OAuth App client ID: " GITHUB_CLIENT_ID
+  read -rsp "Enter GitHub OAuth App client secret: " GITHUB_CLIENT_SECRET
+  echo
+  read -rp "Enter GitHub username to grant access: " GITHUB_USERNAME
+  read -rp "Enter public base URL of the server (for OAuth redirects): " BASE_URL
+  docker run -d --pull=never \
+    --network=amish \
+    -e CDP_PORT="http://$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' xpod-chromium):9222" \
+    -e GITHUB_CLIENT_ID="${GITHUB_CLIENT_ID}" \
+    -e GITHUB_CLIENT_SECRET="${GITHUB_CLIENT_SECRET}" \
+    -e GITHUB_USERNAME="${GITHUB_USERNAME}" \
+    -e BASE_URL="${BASE_URL}" \
+    -p 127.0.0.1:8000:8000 \
+    --name agent-browser-mcp \
+    agent-browser-mcp
+fi
 
 # Install nginx
 sudo apt-get install -y nginx
