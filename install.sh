@@ -4,7 +4,8 @@ set -e
 
 apt-get update
 
-apt-get install -y sudo
+# Install deps
+apt-get install -y sudo curl git
 
 # Install Docker
 if ! command -v docker >/dev/null 2>&1; then
@@ -32,21 +33,19 @@ fi
 sudo systemctl start docker
 
 # Build xpod
-apt-get install -y git
-
 rm -rf /var/lib/xpod && git clone https://github.com/unitehenry/xpod /var/lib/xpod
 
-docker build -t xpod-base -f /var/lib/xpod/base/Containerfile /var/lib/xpod/base
-docker build -t xpod-chromium -f /var/lib/xpod/apps/chromium/Containerfile /var/lib/xpod/apps/chromium
+docker buildx build --load -t xpod-base -f /var/lib/xpod/base/Containerfile /var/lib/xpod/base
+docker buildx build --load -t xpod-chromium -f /var/lib/xpod/apps/chromium/Containerfile /var/lib/xpod/apps/chromium
 
 # Amish network
 docker network inspect amish >/dev/null 2>&1 || docker network create amish
 docker rm -f guacd guacamole xpod-chromium agent-browser-mcp 2>/dev/null || true
 
 # Build agent browser mcp
-git clone https://github.com/unitehenry/agent-browser-mcp /var/lib/agent-browser-mcp
+rm -rf /var/lib/agent-browser-mcp && git clone https://github.com/unitehenry/agent-browser-mcp /var/lib/agent-browser-mcp
 
-docker build -t agent-browser-mcp -f /var/lib/agent-browser-mcp/Containerfile /var/lib/agent-browser-mcp
+docker buildx build --load -t agent-browser-mcp -f /var/lib/agent-browser-mcp/Containerfile /var/lib/agent-browser-mcp
 
 # Run guacd
 docker run -d --network amish --name guacd docker.io/guacamole/guacd
@@ -67,14 +66,14 @@ docker run -d \
   docker.io/guacamole/guacamole
 
 # Run xpod-chromium
-docker run -d \
+docker run -d --pull=never \
   --cap-add=SYS_ADMIN \
   --network amish \
   --name xpod-chromium \
   xpod-chromium
 
 # Run agent browser mcp
-docker run -d \
+docker run -d --pull=never \
   --network=amish \
   -e CDP_PORT="http://$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' xpod-chromium):9222" \
   -p 127.0.0.1:8000:8000 \
