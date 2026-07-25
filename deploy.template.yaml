@@ -6,6 +6,7 @@ services:
     github:
       repo: unitehenry/amish
       branch: master
+      deploy_on_push: true
     dockerfile_path: images/guacamole/Containerfile
     http_port: 8080
     instance_size_slug: basic-xxs
