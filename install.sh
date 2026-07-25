@@ -83,7 +83,7 @@ docker run -d --pull=never \
 # Install nginx
 sudo apt-get install -y nginx
 
-read -rp "Enter server name for nginx (e.g. example.com): " SERVER_NAME
+if [ "${WIZARD}" = "0" ]; then SERVER_NAME="example.com"; else read -rp "Enter server name for nginx (e.g. example.com): " SERVER_NAME; fi
 curl https://raw.githubusercontent.com/unitehenry/amish/refs/heads/master/nginx/nginx.conf -o /etc/nginx/nginx.conf
 sed -i "s/__SERVER_NAME__/${SERVER_NAME}/g" /etc/nginx/nginx.conf
 
