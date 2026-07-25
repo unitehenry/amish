@@ -46,7 +46,7 @@ docker rm -f guacd guacamole xpod-chromium agent-browser-mcp 2>/dev/null || true
 # Build agent browser mcp
 git clone https://github.com/unitehenry/agent-browser-mcp /var/lib/agent-browser-mcp
 
-podman build -t agent-browser-mcp -f /var/lib/agent-browser-mcp/Containerfile /var/lib/agent-browser-mcp
+docker build -t agent-browser-mcp -f /var/lib/agent-browser-mcp/Containerfile /var/lib/agent-browser-mcp
 
 # Run guacd
 docker run -d --network amish --name guacd docker.io/guacamole/guacd
