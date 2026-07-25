@@ -66,4 +66,8 @@ curl -sSL https://raw.githubusercontent.com/unitehenry/amish/master/install.sh -
 
 # Run install script
 WIZARD=0 bash /tmp/install.sh
+
+# Connect directly
+http://127.0.0.1/guacamole
+http://127.0.0.1/sse
 ```
