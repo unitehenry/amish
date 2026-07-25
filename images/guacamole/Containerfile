@@ -5,7 +5,7 @@ USER root
 RUN mkdir -p /etc/guacamole && chown guacamole:guacamole /etc/guacamole
 
 COPY --chown=guacamole:guacamole guacamole/config/user-mapping.xml /etc/guacamole/user-mapping.xml
-COPY --chown=guacamole:guacamole images/guacamole/entrypoint.d/150-replace-credentials.sh /opt/guacamole/entrypoint.d/150-replace-credentials.sh
+COPY --chown=guacamole:guacamole guacamole/entrypoint.d/150-replace-credentials.sh /opt/guacamole/entrypoint.d/150-replace-credentials.sh
 
 RUN chmod 644 /opt/guacamole/entrypoint.d/150-replace-credentials.sh /etc/guacamole/user-mapping.xml
 
