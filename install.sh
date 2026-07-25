@@ -5,7 +5,7 @@ set -e
 apt-get update
 
 # Install deps
-apt-get install -y sudo curl git sed
+apt-get install -y sudo curl git coreutils
 
 # Install Docker
 if ! command -v docker >/dev/null 2>&1; then
