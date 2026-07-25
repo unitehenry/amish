@@ -42,11 +42,15 @@ bash /tmp/install.sh
 
 ## Usage
 
-```
-# Access your browser in the browser
-https://amish.your-app.com/guacamole
+**Access your browser in the browser**
 
-# Use your browser via MCP
+```
+https://amish.your-app.com/guacamole
+```
+
+**Use your browser via MCP**
+
+```
 https://amish.your-app.com/sse
 ```
 
