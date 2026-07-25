@@ -55,7 +55,19 @@ mkdir -p /var/lib/guacamole/config
 
 curl https://raw.githubusercontent.com/unitehenry/amish/refs/heads/master/guacamole/config/user-mapping.xml -o /var/lib/guacamole/config/user-mapping.xml
 
-# TODO: sed guacamole username / password
+if [ "${WIZARD}" = "0" ]; then
+  GUAC_USERNAME="admin"
+  GUAC_PASSWORD="password"
+else
+  read -rp "Enter guacamole username: " GUAC_USERNAME
+  read -rsp "Enter guacamole password: " GUAC_PASSWORD
+  echo
+fi
+
+GUAC_PASSWORD_HASH=$(echo -n "${GUAC_PASSWORD}" | md5sum | awk '{print $1}')
+
+sed -i "s/__USERNAME__/${GUAC_USERNAME}/g" /var/lib/guacamole/config/user-mapping.xml
+sed -i "s/__PASSWORD__/${GUAC_PASSWORD_HASH}/g" /var/lib/guacamole/config/user-mapping.xml
 
 docker run -d \
   --network amish \
