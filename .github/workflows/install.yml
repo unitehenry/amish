@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Run deploy script
-        run: doctl apps create --project-id 4dfa384f-7eb2-4e58-956e-5669bd432e7a --spec deploy.yaml --wait
+        run: doctl apps create --project-id 4dfa384f-7eb2-4e58-956e-5669bd432e7a --spec deploy.template.yaml --wait
 
       - name: Cleanup
         run: doctl apps delete $(doctl apps list | grep amish | awk '{ print $1 }') --force
