@@ -32,6 +32,9 @@ services:
       - key: MCP_TRANSPORT
         value: sse
         scope: RUN_TIME
+      - key: REDIRECT_URL
+        value: /guacamole
+        scope: RUN_TIME
       - key: CDP_PORT
         value: http://xpod-chromium:9222
         scope: RUN_TIME
