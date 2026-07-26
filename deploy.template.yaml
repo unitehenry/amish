@@ -75,27 +75,6 @@ ingress:
   rules:
     - match:
         path:
-          prefix: /mcp
-      component:
-        name: agent-browser-mcp
-        preserve_path_prefix: true
-
-    - match:
-        path:
-          prefix: /sse
-      component:
-        name: agent-browser-mcp
-        preserve_path_prefix: true
-
-    - match:
-        path:
-          prefix: /messages
-      component:
-        name: agent-browser-mcp
-        preserve_path_prefix: true
-
-    - match:
-        path:
           prefix: /guacamole
       component:
         name: guacamole
@@ -104,5 +83,5 @@ ingress:
     - match:
         path:
           prefix: /
-      redirect:
-        uri: /guacamole
+      component:
+        name: agent-browser-mcp
