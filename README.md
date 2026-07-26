@@ -1,6 +1,6 @@
 ## Setup Guide
 
-<a href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/unitehenry/amish/tree/main>
+<a href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/unitehenry/amish/tree/main">
  <img src="https://www.deploytodo.com/do-btn-blue.svg" alt="Deploy to DO">
 </a>
 
