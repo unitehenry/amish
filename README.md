@@ -1,3 +1,6 @@
+
+Give your agent a persistent browser that you can access too.
+
 ## Setup Guide
 
 <a href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/unitehenry/amish/tree/main">
