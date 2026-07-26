@@ -55,6 +55,25 @@ https://amish.your-app.com/sse
 
 ## Architecture
 
+```mermaid
+flowchart TD
+    client
+    guacamole
+    guacd
+    agent-browser-mcp
+    xpod-chromium
+
+    client-- /guacamole -->guacamole
+    client-- /sse -->agent-browser-mcp
+
+    guacamole-->guacd
+    guacd-- VNC -->xpod-chromium
+
+    agent-browser-mcp-- CDP -->xpod-chromium
 ```
-todo: mermaid diagram
-```
+
+## Supporting Projects
+
+- [Apache Guacamole](https://guacamole.apache.org)
+- [xpod](https://github.com/unitehenry/xpod)
+- [agent-browser-mcp](https://github.com/unitehenry/agent-browser-mcp/)
