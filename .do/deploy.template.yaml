@@ -74,7 +74,7 @@ spec:
       internal_ports:
         - 5900
         - 9222
-      instance_size_slug: s-4vcpu-8gb
+      instance_size_slug: apps-s-4vcpu-8gb
       instance_count: 1
   ingress:
     rules:
