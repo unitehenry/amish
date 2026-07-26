@@ -62,7 +62,7 @@ spec:
         tag: latest
       internal_ports:
         - 4822
-      instance_size_slug: apps-s-2vcpu-4gb
+      instance_size_slug: apps-s-1vcpu-0.5gb
       instance_count: 1
   
     - name: xpod-chromium
@@ -74,7 +74,7 @@ spec:
       internal_ports:
         - 5900
         - 9222
-      instance_size_slug: apps-s-4vcpu-8gb
+      instance_size_slug: apps-s-2vcpu-4gb
       instance_count: 1
   ingress:
     rules:
