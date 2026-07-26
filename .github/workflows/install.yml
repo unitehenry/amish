@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Project name
-        run: sed -i 's/name: amish/name: amish-ci/' deploy.template.yaml
+        run: sed -i "s/name: amish/name: amish-ci/" deploy.template.yaml
 
       - name: Run deploy script
         run: doctl apps create --spec deploy.template.yaml --wait
