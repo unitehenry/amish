@@ -1,6 +1,6 @@
 ## Setup Guide
 
-<a href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/unitehenry/amish/tree/master">
+<a href="https://cloud.digitalocean.com/apps/new?repo=https://github.com/unitehenry/amish/tree/main>
  <img src="https://www.deploytodo.com/do-btn-blue.svg" alt="Deploy to DO">
 </a>
 
@@ -13,8 +13,6 @@ The one-click deploy will work out of the box, but here are some recommended way
 - [Guacamole Credentials](#guacamole-credentials)
 - [Configure GitHub OAuth App](#configure-github-oauth-app)
 
-### Guacamole Credentials
-
 ### Configure GitHub OAuth App
 
 - https://github.com/settings/developers
@@ -26,6 +24,10 @@ The one-click deploy will work out of the box, but here are some recommended way
 
 ```
 https://amish.your-app.com/guacamole
+
+Default Credentials
+    Username: admin
+    Password: password
 ```
 
 **Use your browser via MCP**
