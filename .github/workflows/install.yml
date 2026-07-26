@@ -21,7 +21,7 @@ jobs:
         run: 'sed -i "s/name: amish/name: amish-ci/" deploy.template.yaml'
 
       - name: Run deploy script
-        run: doctl apps create --spec deploy.template.yaml --wait
+        run: doctl apps create --spec .do/deploy.template.yaml --wait
 
       - name: Cleanup
         run: doctl apps delete $(doctl apps list | grep amish | awk '{ print $1 }') --force

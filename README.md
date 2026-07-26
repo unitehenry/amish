@@ -5,7 +5,7 @@
 </a>
 
 ```sh
-doctl apps create --spec deploy.template.yaml
+doctl apps create --spec .do/deploy.template.yaml
 ```
 
 The one-click deploy will work out of the box, but here are some recommended ways to secure your deploy:
