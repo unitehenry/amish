@@ -20,8 +20,8 @@ jobs:
       - name: Project name
         run: 'sed -i "s/name: amish/name: amish-ci/" .do/deploy.template.yaml'
 
-      - name: Remove spec: and format yaml
-        run: sed -i -e '1{/^spec:/d}' -e 's/^  //' .do/deploy.template.yaml
+      - name: Remove spec and format yaml
+        run: 'sed -i -e "1{/^spec:/d}" -e "s/^  //" .do/deploy.template.yaml'
 
       - name: Run deploy script
         run: doctl apps create --spec .do/deploy.template.yaml --wait
