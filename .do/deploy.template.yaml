@@ -5,7 +5,7 @@ spec:
     - name: guacamole
       github:
         repo: unitehenry/amish
-        branch: master
+        branch: main
         deploy_on_push: true
       dockerfile_path: images/guacamole/Containerfile
       http_port: 8080
