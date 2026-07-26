@@ -75,6 +75,11 @@ ingress:
   rules:
     - match:
         path:
+          exact: /
+        redirect:
+          uri: /guacamole
+    - match:
+        path:
           prefix: /guacamole
       component:
         name: guacamole
