@@ -53,7 +53,7 @@ docker run -d --network amish --name guacd docker.io/guacamole/guacd
 # Run guacamole
 mkdir -p /var/lib/guacamole/config
 
-curl https://raw.githubusercontent.com/unitehenry/amish/refs/heads/master/guacamole/config/user-mapping.xml -o /var/lib/guacamole/config/user-mapping.xml
+curl https://raw.githubusercontent.com/unitehenry/amish/refs/heads/master/images/guacamole/config/user-mapping.xml -o /var/lib/guacamole/config/user-mapping.xml
 
 if [ "${WIZARD}" = "0" ]; then
   GUAC_USERNAME="admin"
