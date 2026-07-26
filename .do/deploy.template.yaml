@@ -9,7 +9,8 @@ spec:
         deploy_on_push: true
       dockerfile_path: images/guacamole/Containerfile
       http_port: 8080
-      instance_size_slug: basic-xxs
+      instance_size_slug: apps-s-1vcpu-0.5gb
+      instance_count: 1
       envs:
         - key: GUACD_HOSTNAME
           value: guacd
@@ -27,7 +28,8 @@ spec:
         branch: master
       dockerfile_path: Containerfile
       http_port: 8000
-      instance_size_slug: basic-xxs
+      instance_size_slug: apps-s-1vcpu-0.5gb
+      instance_count: 1
       envs:
         - key: MCP_TRANSPORT
           value: sse
@@ -38,7 +40,6 @@ spec:
         - key: CDP_PORT
           value: http://xpod-chromium:9222
           scope: RUN_TIME
-        # Set these for GitHub OAuth (see README). Use secrets for ID/secret.
         - key: GITHUB_CLIENT_ID
           value: ""
           scope: RUN_TIME
@@ -61,7 +62,8 @@ spec:
         tag: latest
       internal_ports:
         - 4822
-      instance_size_slug: basic-xxs
+      instance_size_slug: apps-s-1vcpu-0.5gb
+      instance_count: 1
   
     - name: xpod-chromium
       image:
@@ -72,7 +74,8 @@ spec:
       internal_ports:
         - 5900
         - 9222
-      instance_size_slug: apps-s-2vcpu-4gb
+      instance_size_slug: apps-s-1vcpu-1gb-fixed
+      instance_count: 1
   ingress:
     rules:
       - match:
