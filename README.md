@@ -4,7 +4,7 @@
  <img src="https://www.deploytodo.com/do-btn-blue.svg" alt="Deploy to DO">
 </a>
 
-The one-click deploy will work out of the box, but here are some recommended ways to secure your deployment:
+The one-click deploy will work out of the box - but here are some recommended ways to secure your deployment:
 
 - [Guacamole Credentials](#guacamole-credentials)
 - [Configure GitHub OAuth App](#configure-github-oauth-app)
